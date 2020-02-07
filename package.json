@@ -1,0 +1,21 @@
+{
+  "name": "project-sonar-app",
+  "version": "1.0.0",
+  "description": "project sonar app",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "run-p dev:server dev:client",
+    "watch": "run-p watch:server watch:client",
+    "start": "run-p start:server prod:client",
+    "start:server": "cd ./server && npm run start",
+    "dev:client": "cd ./client && npm run dev",
+    "prod:client": "cd ./client && npm run production",
+    "watch:server": "cd ./server && npm run watch",
+    "watch:client": "cd ./client && npm run watch"
+  },
+  "author": "Artisan Digital Media",
+  "license": "ISC",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

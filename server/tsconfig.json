@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "es6"],
+    "target": "es6",
+    "baseUrl": "./src",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "paths": {
+      "@route/*": ["route/*"],
+      "@service/*": ["service/*"],
+      "@controller/*": ["controller/*"], 
+      "@repository/*": ["repository/*"], 
+      "@util/*": ["util/*"], 
+      "@entity/*": ["entity/*"],
+      "@migration/*": ["migration/*"],
+      "@subscriber/*": ["subscriber/*"],
+      "@test/*": ["test/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

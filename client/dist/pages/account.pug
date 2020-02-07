@@ -1,0 +1,54 @@
+extends ../layout
+
+block content
+  nav.navbar.has-shadow
+    div.navbar-start
+      a(href="/").navbar-item.title.is-1 Sonar
+    div.navbar-end
+      div.navbar-item
+        p=`You are logged in as ${data.user.username}`
+      a(href="/account").navbar-item
+        span.icon.is-large
+          i.fas.fa-user-circle.fa-2x
+      a(href="/logout").navbar-item
+        span.icon.is-large
+          i.fas.fa-sign-out-alt.fa-2x
+  div.columns.is-gapless
+    aside.menu.column.is-2.is-narrow-mobile.is-hidden-mobile
+      section.section
+        p.menu-label General
+        ul.menu-list
+          li
+            a(href="/dashboard") Dashboard
+          li
+            a(href="/account") Account
+          li
+            a(href="/settings") Settings
+    div.column.is-10
+      section.section
+        div.columns.is-vcentered.is-centered.is-desktop
+          div.column.is-half
+            h1.title Account
+            form(action="/users/update", method="post")
+              div.field
+                label(for="username").label Username
+                div.control
+                  input(type="text", placeholder="Username", name="username", value=`${data.user.username}`, readonly)#username.input
+              div.field
+                label(for="email").label Email
+                div.control
+                  input(type="email", placeholder="Email", name="email", value=`${data.user.email}`)#email.input
+              div.field
+                label(for="password").label Password
+                div.control
+                  input(type="password", placeholder="Password", name="password")#password.input
+              div.field
+                label(for="passwordConf").label Confirm Password
+                div.control
+                  input(type="password", placeholder="Confirm Password", name="passwordConf")#passwordConf.input
+              div.field
+                div.control
+                  button(type="submit").button.is-link Update
+
+block scripts
+  script(type="text/javascript").
