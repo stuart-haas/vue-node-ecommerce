@@ -4,14 +4,15 @@
   "description": "vue and express web app",
   "main": "index.ts",
   "scripts": {
-    "dev": "run-p start:server dev:client",
-    "watch": "run-p watch:server watch:client",
-    "start": "run-p start:server prod:client",
-    "start:server": "cd ./server && npm run start",
-    "dev:client": "cd ./client && npm run dev",
-    "prod:client": "cd ./client && npm run production",
-    "watch:server": "cd ./server && npm run watch",
-    "watch:client": "cd ./client && npm run watch"
+    "dev": "run-p server:start client:dev",
+    "watch": "run-p server:watch client:watch",
+    "start": "npm run server:start",
+    "build": "cd ./client && npm install && npm run prod",
+    "server:start": "cd ./server && npm run start",
+    "server:watch": "cd ./server && npm run watch",
+    "client:dev": "cd ./client && npm run dev",
+    "client:watch": "cd ./client && npm run watch",
+    "client:prod": "cd ./client && npm run production"
   },
   "author": "Stuart Haas",
   "license": "ISC",
