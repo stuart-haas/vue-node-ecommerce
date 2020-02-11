@@ -1,6 +1,6 @@
-import { ImageController } from "@controller/ImageController"
-import { ImageService } from "@service/ImageService"
-import { AuthService } from "@service/AuthService"
+import { ImageController } from "../controller/ImageController"
+import { ImageService } from "../service/ImageService"
+import { AuthService } from "../service/AuthService"
 
 export const ImageRoute = [
   {

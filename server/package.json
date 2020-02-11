@@ -4,9 +4,9 @@
   "description": "vuex server",
   "main": "index.ts",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/index.ts",
-    "watch": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' -r tsconfig-paths/register src/index.ts",
-    "test": "mocha -r ts-node/register src/**/*.spec.ts",
+    "start": "ts-node -r tsconfig-paths/register index.ts",
+    "watch": "nodemon --watch '**/*.ts' --ignore '**/*.spec.ts' --exec 'ts-node' -r tsconfig-paths/register index.ts",
+    "test": "mocha -r ts-node/register **/*.spec.ts",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:create": "npm run typeorm migration:create -- -n",
     "migration:generate": "npm run typeorm migration:generate -- -n",

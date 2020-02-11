@@ -1,6 +1,6 @@
 import * as bcrypt from "bcryptjs"
 import { getManager } from "typeorm"
-import { User } from "@entity/User"
+import { User } from "../entity/User"
 import { check, validationResult } from "express-validator"
 
 export class UserService {

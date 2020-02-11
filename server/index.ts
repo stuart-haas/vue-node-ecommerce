@@ -10,7 +10,7 @@ import * as path from "path"
 import { createConnection, getConnection } from "typeorm"
 import { Routes } from "./routes"
 import { TypeormStore } from "typeorm-store"
-import { Session } from "@entity/Session"
+import { Session } from "./entity/Session"
 
 dotenv.config()
 
@@ -24,7 +24,7 @@ dotenv.config()
     app.use(cookieParser())
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({extended: true}))
-    app.use(express.static(path.join(__dirname, '../../client/dist')))
+    app.use(express.static(path.join(__dirname, '../client/dist')))
 
     /*const repository = getConnection().getRepository(Session)
 
