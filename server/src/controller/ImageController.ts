@@ -1,6 +1,5 @@
-import * as path from 'path'
-import { getManager } from 'typeorm'
-import { Image } from '@entity/Image'
+import { getManager } from "typeorm"
+import { Image } from "@entity/Image"
 
 export class ImageController {
 

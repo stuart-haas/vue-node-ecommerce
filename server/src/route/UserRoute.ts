@@ -1,6 +1,6 @@
-import { UserController } from '@controller/UserController'
-import { UserService } from '@service/UserService'
-import { SessionController } from '@controller/SessionController'
+import { UserController } from "@controller/UserController"
+import { UserService } from "@service/UserService"
+import { SessionController } from "@controller/SessionController"
 
 export const UserRoute = [
   {

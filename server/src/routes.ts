@@ -2,7 +2,7 @@ import { ImageRoute } from "@route/ImageRoute"
 import { UserRoute } from "@route/UserRoute"
 import { Array } from "@util/Array"
 
-const routes = [
+export const routes = [
   ImageRoute,
   UserRoute
 ]

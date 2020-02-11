@@ -1,7 +1,6 @@
-import { ImageController } from '@controller/ImageController'
-import { PredictionController } from '@controller/PredictionController'
-import { ImageService } from '@service/ImageService'
-import { AuthService } from '@service/AuthService'
+import { ImageController } from "@controller/ImageController"
+import { ImageService } from "@service/ImageService"
+import { AuthService } from "@service/AuthService"
 
 export const ImageRoute = [
   {
@@ -19,7 +18,7 @@ export const ImageRoute = [
   {
     path: "/images/upload",
     method: "post",
-    middleware: [ ImageService.uploadMultiple, ImageService.getMetaData, ImageController.create, PredictionController.create ],
+    middleware: [ ImageService.uploadMultiple, ImageService.getMetaData, ImageController.create ],
     action: async (req, res) => { await res.send({ data: "Upload complete" }) }
   }
 ]

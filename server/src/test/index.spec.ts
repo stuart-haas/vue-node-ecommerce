@@ -1,8 +1,7 @@
-import * as express from 'express'
-import * as bodyParser from 'body-parser'
-import * as request from 'supertest'
-import { expect } from 'chai'
-import 'mocha'
+import * as express from "express"
+import * as bodyParser from "body-parser"
+import * as request from "supertest"
+import "mocha"
 
 const app = express()
 

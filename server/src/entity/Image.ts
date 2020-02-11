@@ -1,5 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Generated, Entity, CreateDateColumn, UpdateDateColumn, OneToOne } from 'typeorm'
-import { Prediction } from '@entity/Prediction'
+import { PrimaryGeneratedColumn, Column, Generated, Entity, CreateDateColumn, UpdateDateColumn } from "typeorm"
 
 @Entity()
 export class Image {
@@ -21,9 +20,6 @@ export class Image {
 
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     updatedAt: Date
-
-    @OneToOne(type => Prediction, prediction => prediction.image, { onDelete: 'CASCADE' })
-    prediction: Prediction
 
     @Column()
     @Generated("uuid")

@@ -1,10 +1,10 @@
 {
-  "name": "project-sonar-app",
+  "name": "vue-express-web-app",
   "version": "1.0.0",
-  "description": "project sonar app",
+  "description": "vue and express web app",
   "main": "index.ts",
   "scripts": {
-    "dev": "run-p dev:server dev:client",
+    "dev": "run-p start:server dev:client",
     "watch": "run-p watch:server watch:client",
     "start": "run-p start:server prod:client",
     "start:server": "cd ./server && npm run start",
@@ -13,7 +13,7 @@
     "watch:server": "cd ./server && npm run watch",
     "watch:client": "cd ./client && npm run watch"
   },
-  "author": "Artisan Digital Media",
+  "author": "Stuart Haas",
   "license": "ISC",
   "devDependencies": {
     "npm-run-all": "^4.1.5"

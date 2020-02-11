@@ -1,18 +1,18 @@
-import 'reflect-metadata'
-import * as express from 'express'
-import * as session from 'express-session'
-import * as bodyParser from 'body-parser'
-import * as cors from 'cors'
-import * as helmet from 'helmet'
-import * as cookieParser from 'cookie-parser'
-import * as dotenv from 'dotenv'
-import * as path from 'path'
-import { createConnection, getConnection } from 'typeorm'
+import "reflect-metadata"
+import * as express from "express"
+import * as session from "express-session"
+import * as bodyParser from "body-parser"
+import * as cors from "cors"
+import * as helmet from "helmet"
+import * as cookieParser from "cookie-parser"
+import * as dotenv from "dotenv"
+import * as path from "path"
+import { createConnection, getConnection } from "typeorm"
 import { Routes } from "./routes"
-import { TypeormStore } from 'typeorm-store'
-import { Session } from '@entity/Session'
+import { TypeormStore } from "typeorm-store"
+import { Session } from "@entity/Session"
 
-dotenv.config({path:__dirname+'/./../../.env'})
+dotenv.config()
 
 createConnection().then(async connection => {
 
@@ -23,7 +23,7 @@ createConnection().then(async connection => {
     app.use(helmet())
     app.use(cookieParser())
     app.use(bodyParser.json())
-    app.use(bodyParser.urlencoded({extended: false}))
+    app.use(bodyParser.urlencoded({extended: true}))
     app.use(express.static(path.join(__dirname, '../../client/dist')))
 
     const repository = getConnection().getRepository(Session)

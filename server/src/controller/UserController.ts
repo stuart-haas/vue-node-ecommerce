@@ -1,6 +1,6 @@
-import { getManager } from 'typeorm'
-import { User } from '@entity/User'
-import { UserRepository } from '@repository/UserRepository'
+import { getManager } from "typeorm"
+import { User } from "@entity/User"
+import { UserRepository } from "@repository/UserRepository"
 
 export class UserController {
 

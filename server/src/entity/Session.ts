@@ -1,5 +1,5 @@
-import { BaseEntity, Generated, Column, Entity, PrimaryColumn } from 'typeorm'
-import { SessionEntity } from 'typeorm-store'
+import { BaseEntity, Generated, Column, Entity, PrimaryColumn } from "typeorm"
+import { SessionEntity } from "typeorm-store"
 
 @Entity()
 export class Session extends BaseEntity implements SessionEntity {
