@@ -7,7 +7,7 @@
     "dev": "run-p server:start client:dev",
     "watch": "run-p server:watch client:watch",
     "start": "npm run server:start",
-    "build": "cd ./client && npm install && npm run prod",
+    "build": "cd ./client && npm install --dev && npm run prod",
     "server:start": "cd ./server && npm run start",
     "server:watch": "cd ./server && npm run watch",
     "client:dev": "cd ./client && npm run dev",
