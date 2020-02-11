@@ -1,7 +1,7 @@
 {
-  "name": "project-sonar-server",
+  "name": "vuex-server",
   "version": "1.0.0",
-  "description": "project sonar server",
+  "description": "vuex server",
   "main": "index.ts",
   "scripts": {
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
