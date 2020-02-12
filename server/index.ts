@@ -14,7 +14,7 @@ import { Session } from "./entity/Session"
 
 dotenv.config()
 
-//createConnection().then(async connection => {
+createConnection().then(async connection => {
 
     const app = express()
     const PORT = process.env.PORT || 8080
@@ -26,7 +26,7 @@ dotenv.config()
     app.use(bodyParser.urlencoded({extended: true}))
     app.use(express.static(path.join(__dirname, '../client/dist')))
 
-    /*const repository = getConnection().getRepository(Session)
+    const repository = getConnection().getRepository(Session)
 
     app.use(session({
       secret: 'secret',
@@ -37,18 +37,26 @@ dotenv.config()
         secure: false,
         maxAge: 24 * 60 * 60 * 1000
       }
-    }))*/
+    }))
+
+    const router = express.Router()
 
     Routes.forEach(route => {
-        app[route.method](route.path, route.middleware, (req, res, next) => {
-          route.action(req, res)
-              .then(() => next)
-              .catch(err => next(err))
-        })
+      router[route.method](route.path, route.middleware, (req, res, next) => {
+        route.action(req, res)
+          .then(() => next)
+          .catch(err => next(err))
+      })
+    })
+
+    app.use('/api', router)
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
     })
 
     app.listen(PORT)
 
     console.log(`Express application is up and running on port ${PORT}`)
 
-//}).catch(error => console.log("TypeORM connection error: ", error))
+}).catch(error => console.log("TypeORM connection error: ", error))

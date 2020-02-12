@@ -29,6 +29,30 @@ export class UserController {
     res.send(user)
   }
 
+  public static async findByEmail(req, res) {
+    const userRepository = getManager().getRepository(User)
+    const user = await userRepository.find({ where: { email: req.query.email }})
+
+    if (!user) {
+      res.status(404).end()
+      return
+    }
+
+    res.send(user)
+  }
+
+  public static async findByUsername(req, res) {
+    const userRepository = getManager().getRepository(User)
+    const user = await userRepository.find({ where: { username: req.query.username }})
+
+    if (!user) {
+      res.status(404).end()
+      return
+    }
+
+    res.send(user)
+  }
+
   public static async findBySession(req, res) {
       const userRepository = getManager().getRepository(User)
       const user = await userRepository.findOne(req.session.user.id)

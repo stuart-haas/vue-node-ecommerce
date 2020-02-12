@@ -2,7 +2,7 @@ let mix = require('laravel-mix'),
 path = require('path')
 
 mix.setPublicPath('./dist')
-    .js('src/js/app.js', 'dist/js')
+    .js('src/js/index.js', 'dist/js')
     .sass('src/scss/app.scss', 'dist/css')
     .sourceMaps()
     .browserSync({

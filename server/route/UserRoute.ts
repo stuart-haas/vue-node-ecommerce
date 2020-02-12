@@ -10,10 +10,16 @@ export const UserRoute = [
     action: UserController.findAll,
   },
   {
-    path: "/users/:id",
+    path: "/users/email",
     method: "get",
     middleware: [],
-    action: UserController.findById,
+    action: UserController.findByEmail,
+  },
+  {
+    path: "/users/name",
+    method: "get",
+    middleware: [],
+    action: UserController.findByUsername,
   },
   {
     path: "/users/register",

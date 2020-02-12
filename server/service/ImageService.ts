@@ -4,7 +4,6 @@ import * as exifr from "exifr"
 import * as multer from "multer"
 
 const storage = multer.diskStorage({
-  destination: __dirname+'client/dist/uploads',
   filename: (req, file, callback) => {
     crypto.pseudoRandomBytes(16, function(err, raw) {
       if (err) return callback(err)
