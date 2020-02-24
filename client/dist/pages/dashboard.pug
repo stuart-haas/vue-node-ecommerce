@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  nav.navbar.has-shadow
+    div.navbar-start
+      a(href="/").navbar-item.title.is-1 Vue Express Web App
+    div.navbar-end
+      div.navbar-item
+        p=`You are logged in as ${data.user.username}`
+      a(href="/account").navbar-item
+        span.icon.is-large
+          i.fas.fa-user-circle.fa-2x
+      a(href="/logout").navbar-item
+        span.icon.is-large
+          i.fas.fa-sign-out-alt.fa-2x
+  div.columns.is-gapless
+    aside.menu.column.is-2.is-narrow-mobile.is-hidden-mobile
+      section.section
+        p.menu-label General
+        ul.menu-list
+          li
+            a(href="/dashboard").is-active Dashboard
+          li
+            a(href="/account") Account
+          li
+            a(href="/settings") Settings

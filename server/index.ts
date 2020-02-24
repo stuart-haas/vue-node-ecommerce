@@ -6,7 +6,6 @@ import * as cors from "cors"
 import * as helmet from "helmet"
 import * as cookieParser from "cookie-parser"
 import * as dotenv from "dotenv"
-import * as path from "path"
 import { createConnection, getConnection } from "typeorm"
 import { Routes } from "./routes"
 import { TypeormStore } from "typeorm-store"
@@ -24,7 +23,10 @@ createConnection().then(async connection => {
     app.use(cookieParser())
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({extended: true}))
-    app.use(express.static(path.join(__dirname, '../client/dist')))
+    app.set('view engine', 'pug')
+    app.set('views', '../client/dist')
+    app.use(express.static('./node_modules'))
+    app.use(express.static('../client/dist'))
 
     const repository = getConnection().getRepository(Session)
 
@@ -39,21 +41,27 @@ createConnection().then(async connection => {
       }
     }))
 
-    const router = express.Router()
-
-    Routes.forEach(route => {
-      router[route.method](route.path, route.middleware, (req, res, next) => {
+    const apiRouter = express.Router()
+    
+    Routes.API.forEach(route => {
+      apiRouter[route.method](route.path, route.middleware, (req, res, next) => {
         route.action(req, res)
           .then(() => next)
           .catch(err => next(err))
       })
     })
 
-    app.use('/api', router)
+    app.use('/api', apiRouter)
 
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
+    const viewRouter = express.Router()
+
+    Routes.View.forEach(route => {
+      viewRouter[route.method](route.path, route.middleware, (req, res, next) => {
+        route.action(req, res)
+      })
     })
+
+    app.use('/', viewRouter)
 
     app.listen(PORT)
 
