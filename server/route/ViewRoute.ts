@@ -44,5 +44,11 @@ export const ViewRoute = [
     method: "get",
     middleware: [ SessionController.delete ],
     action: ViewController.redirect("/login")
+  },
+  {
+    path: "/store",
+    method: "get",
+    middleware: [],
+    action: ViewController.renderStore
   }
 ]

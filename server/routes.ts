@@ -1,11 +1,13 @@
-import { ImageRoute } from "./route/ImageRoute"
-import { UserRoute } from "./route/UserRoute"
-import { Array } from "./util/Array"
+import { ImageRoute } from "@route/ImageRoute"
+import { UserRoute } from "@route/UserRoute"
+import { ProductRoute } from "@route/ProductRoute"
+import { Array } from "@util/Array"
 import { ViewRoute } from "@route/ViewRoute"
 
 const ApiRoutes = [
   ImageRoute,
-  UserRoute
+  UserRoute,
+  ProductRoute
 ]
 
 const ViewRoutes = [

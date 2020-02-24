@@ -31,4 +31,8 @@ export class ViewController {
   public static renderRegister(req, res) {
     res.render('pages/register')
   }
+
+  public static renderStore(req, res) {
+    res.render('pages/store')
+  }
 }
