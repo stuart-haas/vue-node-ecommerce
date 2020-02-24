@@ -1,13 +1,15 @@
 import { ImageRoute } from "@route/ImageRoute"
 import { UserRoute } from "@route/UserRoute"
 import { ProductRoute } from "@route/ProductRoute"
-import { Array } from "@util/Array"
+import { CartRoute } from "@route/CartRoute"
 import { ViewRoute } from "@route/ViewRoute"
+import { Array } from "@util/Array"
 
 const ApiRoutes = [
   ImageRoute,
   UserRoute,
-  ProductRoute
+  ProductRoute,
+  CartRoute
 ]
 
 const ViewRoutes = [

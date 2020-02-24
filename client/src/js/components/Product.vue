@@ -6,18 +6,20 @@
           <p class="title is-4">{{ product.name }}</p>
           <p class="subtitle is-6">SKU: {{ product.sku }}</p>
           <p>Description: {{ product.description }}</p>
+          <p>Price: ${{ product.price }}</p>
           <p>In Stock: {{ product.inStock }}</p>
-          <input class="input is-rounded" type="text" placeholder="Quantity">
+          <input class="input is-rounded" type="text" placeholder="Quantity" v-model="quantity">
         </div>
       </div>
       <footer class="card-footer">
-        <a href="#" class="card-footer-item">Add to Cart</a>
+        <a href="#" class="card-footer-item" @click="addToCart">Add to Cart</a>
       </footer>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   props: {
     product: {
@@ -25,6 +27,24 @@ export default {
     },
     index: {
       type: Number
+    }
+  },
+  data() {
+    return {
+      quantity: 0
+    }
+  },
+  methods: {
+    addToCart() {
+      axios.post('/api/cart/add', null, { params: {
+        sku: this.product.sku,
+        quantity: this.quantity,
+        price: this.product.price
+      }}).then(response => {
+        console.log(response.data)
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
