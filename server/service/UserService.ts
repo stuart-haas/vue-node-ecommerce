@@ -63,7 +63,7 @@ export class UserService {
     }
   }
 
-  public static encryptPassword(req, res, next) {
+  public static hashPassword(req, res, next) {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
       req.body.password = hash
       return next()

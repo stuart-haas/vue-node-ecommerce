@@ -24,7 +24,7 @@ export const UserRoute = [
   {
     path: "/users/register",
     method: "post",
-    middleware: [ UserService.validateRegistration, UserService.validationResult, UserService.encryptPassword ],
+    middleware: [ UserService.validateRegistration, UserService.validationResult, UserService.hashPassword ],
     action: UserController.create,
   },
   {
@@ -36,7 +36,7 @@ export const UserRoute = [
   {
     path: "/users/update",
     method: "post",
-    middleware: [ UserService.validateUpdate, UserService.validationResult, UserService.encryptPassword ],
+    middleware: [ UserService.validateUpdate, UserService.validationResult, UserService.hashPassword ],
     action: UserController.update
   }
 ]
