@@ -10,6 +10,11 @@ import { createConnection, getConnection } from "typeorm"
 import { Routes } from "./routes"
 import { TypeormStore } from "typeorm-store"
 import { Session } from "./entity/Session"
+import { ImageRoute } from "@route/ImageRoute"
+import { UserRoute } from "@route/UserRoute"
+import { ProductRoute } from "@route/ProductRoute"
+import { CartRoute } from "@route/CartRoute"
+import { ViewRoute } from "@route/ViewRoute"
 
 dotenv.config()
 
@@ -23,15 +28,15 @@ createConnection().then(async connection => {
     app.use(cookieParser())
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({extended: true}))
-    app.set('view engine', 'pug')
-    app.set('views', '../client/dist')
-    app.use(express.static('./node_modules'))
-    app.use(express.static('../client/dist'))
+    app.set("view engine", "pug")
+    app.set("views", "../client/dist")
+    app.use(express.static("./node_modules"))
+    app.use(express.static("../client/dist"))
 
     const repository = getConnection().getRepository(Session)
 
     app.use(session({
-      secret: 'secret',
+      secret: "secret",
       resave: false,
       saveUninitialized: false,
       store: new TypeormStore({ repository }),
@@ -41,27 +46,8 @@ createConnection().then(async connection => {
       }
     }))
 
-    const apiRouter = express.Router()
-    
-    Routes.API.forEach(route => {
-      apiRouter[route.method](route.path, route.middleware, (req, res, next) => {
-        route.action(req, res)
-          .then(() => next)
-          .catch(err => next(err))
-      })
-    })
-
-    app.use('/api', apiRouter)
-
-    const viewRouter = express.Router()
-
-    Routes.View.forEach(route => {
-      viewRouter[route.method](route.path, route.middleware, (req, res, next) => {
-        route.action(req, res)
-      })
-    })
-
-    app.use('/', viewRouter)
+    Routes.registerApiRoutes(app, "/api", UserRoute, ImageRoute, ProductRoute, CartRoute)
+    Routes.registerViewRoutes(app, "/", ViewRoute)
 
     app.listen(PORT)
 

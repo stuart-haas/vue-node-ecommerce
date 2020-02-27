@@ -10,20 +10,20 @@ const PORT = process.env.PORT || 3000
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.get('/', function (req, res) {
-  res.status(200).send('ok');
+app.get("/", function (req, res) {
+  res.status(200).send("ok");
 })
 
 const server = app.listen(PORT)
 
-describe('Status and content', () => {
+describe("Status and content", () => {
   afterEach(() => {
     server.close()
   })
-  describe('Main page', () => {
-    it('status', (done) => {
+  describe("Main page", () => {
+    it("status", (done) => {
       request(server)
-        .get('/')
+        .get("/")
         .expect(200, done)
     })
   })

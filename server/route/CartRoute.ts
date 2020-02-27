@@ -1,4 +1,4 @@
-import { CartController } from '@controller/CartController'
+import { CartController } from "@controller/CartController"
 
 export const CartRoute = [
   {

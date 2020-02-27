@@ -6,10 +6,10 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column({name: 'username', unique: true})
+    @Column({name: "username", unique: true})
     username: string
 
-    @Column({name: 'email', unique: true})
+    @Column({name: "email", unique: true})
     email: string
 
     @Column()

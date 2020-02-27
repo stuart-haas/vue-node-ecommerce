@@ -1,19 +1,41 @@
-import { ImageRoute } from "@route/ImageRoute"
-import { UserRoute } from "@route/UserRoute"
-import { ProductRoute } from "@route/ProductRoute"
-import { CartRoute } from "@route/CartRoute"
-import { ViewRoute } from "@route/ViewRoute"
-import { Array } from "@util/Array"
+import * as express from "express"
 
-const ApiRoutes = [
-  ImageRoute,
-  UserRoute,
-  ProductRoute,
-  CartRoute
-]
+export class Routes {
 
-const ViewRoutes = [
-  ViewRoute
-]
+  private static apiRoutes = []
+  private static viewRoutes = []
 
-export const Routes = { API: Array.flatten(ApiRoutes), View: Array.flatten(ViewRoutes) }
+  public static registerApiRoutes(app, basePath, ...routes) {
+    const router = express.Router()
+
+    this.apiRoutes.push(routes)
+
+    this.apiRoutes[0].forEach(route => {
+      route.forEach(route => {
+        router[route.method](route.path, route.middleware, (req, res, next) => {
+          route.action(req, res)
+            .then(() => next)
+            .catch(err => next(err))
+        })
+      })
+    })
+
+    app.use(basePath, router)
+  }
+
+  public static registerViewRoutes(app, basePath, ...routes) {
+    const router = express.Router()
+
+    this.viewRoutes.push(routes)
+
+    this.viewRoutes[0].forEach(route => {
+      route.forEach(route => {
+        router[route.method](route.path, route.middleware, (req, res, next) => {
+          route.action(req, res)
+        })
+      })
+    })
+
+    app.use(basePath, router)
+  }
+}

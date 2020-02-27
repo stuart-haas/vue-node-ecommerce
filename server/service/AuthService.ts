@@ -24,7 +24,7 @@ export class AuthService {
     if (req.xhr) {
       return next()
     } else {
-      res.status(400).send('400 Bad Request')
+      res.status(400).send("400 Bad Request")
     }
   }
 }

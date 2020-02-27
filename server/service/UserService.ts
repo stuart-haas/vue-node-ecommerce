@@ -6,47 +6,47 @@ import { check, validationResult } from "express-validator"
 export class UserService {
 
   public static validateUpdate = [
-    check('email', 'Your email is not valid').exists().isLength({min: 5}).trim().escape(),
-    check('password', 'Your password must be at least 5 characters').exists().isLength({min: 5}).trim().escape(),
-    check('passwordConf', 'Passwords do not match').custom((value, {req}) => (value == req.body.password)).trim().escape()
+    check("email", "Your email is not valid").exists().isLength({min: 5}).trim().escape(),
+    check("password", "Your password must be at least 5 characters").exists().isLength({min: 5}).trim().escape(),
+    check("passwordConf", "Passwords do not match").custom((value, {req}) => (value == req.body.password)).trim().escape()
   ]
 
   public static validateRegistration = [
-    check('username', 'Your username must have more than 5 characters').exists().isLength({min: 5}).trim().escape().custom(value => {
+    check("username", "Your username must have more than 5 characters").exists().isLength({min: 5}).trim().escape().custom(value => {
       const userRepository = getManager().getRepository(User)
-      return userRepository.findOne({where: {'username': value}}).then(user => {
+      return userRepository.findOne({where: {"username": value}}).then(user => {
         if (user) {
-          return Promise.reject('Username already exists')
+          return Promise.reject("Username already exists")
         }
       })
     }),
-    check('email', 'Your email is not valid').exists().trim().escape().isEmail().custom(value => {
+    check("email", "Your email is not valid").exists().trim().escape().isEmail().custom(value => {
       const userRepository = getManager().getRepository(User)
-      return userRepository.findOne({where: {'email': value}}).then(user => {
+      return userRepository.findOne({where: {"email": value}}).then(user => {
         if (user) {
-          return Promise.reject('Email already exists')
+          return Promise.reject("Email already exists")
         }
       })
     }),
-    check('password', 'Your password must be at least 5 characters').exists().isLength({min: 5}).trim().escape(),
-    check('passwordConf', 'Passwords do not match').custom((value, {req}) => (value == req.body.password)).trim().escape()
+    check("password", "Your password must be at least 5 characters").exists().isLength({min: 5}).trim().escape(),
+    check("passwordConf", "Passwords do not match").custom((value, {req}) => (value == req.body.password)).trim().escape()
   ]
 
   public static validateLogin = [
-    check('username').exists().trim().escape().custom(value => {
+    check("username").exists().trim().escape().custom(value => {
       const userRepository = getManager().getRepository(User)
-      return userRepository.findOne({where: {'username': value}}).then(user => {
+      return userRepository.findOne({where: {"username": value}}).then(user => {
         if (!user) {
-          return Promise.reject('Username not found')
+          return Promise.reject("Username not found")
         }
       })
     }),
-    check('password').exists().trim().escape().custom((value, {req}) => {
+    check("password").exists().trim().escape().custom((value, {req}) => {
       const userRepository = getManager().getRepository(User)
-      return userRepository.findOne({where: {'username': req.body.username}}).then(user => {
+      return userRepository.findOne({where: {"username": req.body.username}}).then(user => {
         return bcrypt.compare(value, user.password).then((error) => {
           if(!error) {
-            return Promise.reject('Password does not match')
+            return Promise.reject("Password does not match")
           }
         })
       })
