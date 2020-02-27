@@ -1,18 +1,18 @@
-import { ImageController } from "../controller/ImageController"
-import { ImageService } from "../service/ImageService"
-import { AuthService } from "../service/AuthService"
+import { ImageController } from "@controller/ImageController"
+import { ImageService } from "@service/ImageService"
+import { Auth } from "@middleware/Auth"
 
 export const ImageRoute = [
   {
     path: "/images",
     method: "get",
-    middleware: [ AuthService.requireXHR ],
+    middleware: [ Auth.xhr ],
     action: ImageController.findAll
   },
   {
     path: "/images/:id",
     method: "delete",
-    middleware: [ AuthService.requireXHR ],
+    middleware: [ Auth.xhr ],
     action: ImageController.delete
   },
   {

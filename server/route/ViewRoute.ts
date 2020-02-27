@@ -1,4 +1,4 @@
-import { AuthService } from "@service/AuthService"
+import { Auth } from "@middleware/Auth"
 import { ViewController } from "@controller/ViewController"
 import { SessionController } from "@controller/SessionController"
 
@@ -6,37 +6,37 @@ export const ViewRoute = [
   {
     path: "/",
     method: "get",
-    middleware: [ AuthService.requireAuthentication("/login") ],
+    middleware: [ Auth.require("/login") ],
     action: ViewController.renderDashboard
   },
   {
     path: "/dashboard",
     method: "get",
-    middleware: [ AuthService.requireAuthentication("/login") ],
+    middleware: [ Auth.require("/login") ],
     action: ViewController.renderDashboard
   },
   {
     path: "/account",
     method: "get",
-    middleware: [ AuthService.requireAuthentication("/login") ],
+    middleware: [ Auth.require("/login") ],
     action: ViewController.renderAccount
   },
   {
     path: "/settings",
     method: "get",
-    middleware: [ AuthService.requireAuthentication("/login") ],
+    middleware: [ Auth.require("/login") ],
     action: ViewController.renderSettings
   },
   {
     path: "/register",
     method: "get",
-    middleware: [ AuthService.checkAuthentication("/dashboard") ],
+    middleware: [ Auth.verify("/dashboard") ],
     action: ViewController.renderRegister
   },
   {
     path: "/login",
     method: "get",
-    middleware: [ AuthService.checkAuthentication("/dashboard") ],
+    middleware: [ Auth.verify("/dashboard") ],
     action: ViewController.renderLogin
   },
   {

@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "paths": {
       "@route/*": ["route/*"],
+      "@middleware/*": ["middleware/*"],
       "@service/*": ["service/*"],
       "@controller/*": ["controller/*"], 
       "@repository/*": ["repository/*"], 
