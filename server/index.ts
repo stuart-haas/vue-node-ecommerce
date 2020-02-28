@@ -15,6 +15,8 @@ import { UserRoute } from "@route/UserRoute"
 import { ProductRoute } from "@route/ProductRoute"
 import { CartRoute } from "@route/CartRoute"
 import { ViewRoute } from "@route/ViewRoute"
+import { Route } from "@route/Route"
+import { log } from "@middleware/Logger"
 
 dotenv.config()
 
@@ -46,8 +48,29 @@ createConnection().then(async connection => {
       }
     }))
 
-    Routes.registerApiRoutes(app, "/api", UserRoute, ImageRoute, ProductRoute, CartRoute)
-    Routes.registerViewRoutes(app, "/", ViewRoute)
+    //Routes.registerApiRoutes(app, "/api", UserRoute, ImageRoute, ProductRoute, CartRoute)
+    //Routes.registerViewRoutes(app, "/", ViewRoute)
+
+    Route.boot(app)
+
+    Route.prefix('/hello').group((router) => {
+      router.get('/world', (req, res) => {
+        res.send("Hello World!")
+      })
+    })
+
+    Route.middleware([log]).group((router, middleware) => {
+      router.get('/path', middleware, (req, res) => {
+        res.send("Path!")
+      })
+    })
+
+    Route.group({prefix:'/test', middleware: [log]}, ((router, middleware) => {
+      Route.bind('get', '/route', middleware, Route.testAction)
+      router.get('/path', middleware, (req, res) => {
+        res.send("Test Path!")
+      })
+    }))
 
     app.listen(PORT)
 
