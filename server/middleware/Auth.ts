@@ -1,8 +1,10 @@
+import { Response, Request, NextFunction } from "express"
+
 export class Auth {
   
-  public static require(url?) {
-    return (req, res, next) => {
-      if(!req.session.user) {
+  public static require(url:string='') {
+    return (req:Request, res:Response, next:NextFunction) => {
+      if(!req['session'].user) {
         if(url) {
           res.redirect(url)
         } else {
@@ -14,13 +16,13 @@ export class Auth {
     }
   }
 
-  public static verify(url?) {
-    return (req, res, next) => {
-      if(req.session && req.session.user) {
+  public static verify(url:string='') {
+    return (req:Request, res:Response, next:NextFunction) => {
+      if(req['session'] && req['session'].user) {
         if(url) {
           res.redirect(url)
         } else {
-          res.status(200).send({status: 200, user: req.session.user})
+          res.status(200).send({status: 200, user: req['session'].user})
         }
       } else {
         return next()
@@ -28,7 +30,7 @@ export class Auth {
     }
   }
 
-  public static xhr(req, res, next) {
+  public static xhr(req:Request, res:Response, next:NextFunction) {
     if (req.xhr) {
       return next()
     } else {

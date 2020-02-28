@@ -2,6 +2,7 @@ import * as bcrypt from "bcryptjs"
 import { getManager } from "typeorm"
 import { User } from "@entity/User"
 import { check, validationResult } from "express-validator"
+import { Response, Request, NextFunction } from "express"
 
 export class UserService {
 
@@ -33,17 +34,17 @@ export class UserService {
   ]
 
   public static validateLogin = [
-    check("username").exists().trim().escape().custom(value => {
+    check("username").exists().trim().escape().custom(async value => {
       const userRepository = getManager().getRepository(User)
-      return userRepository.findOne({where: {"username": value}}).then(user => {
+      return await userRepository.findOne({where: {"username": value}}).then(user => {
         if (!user) {
           return Promise.reject("Username not found")
         }
       })
     }),
-    check("password").exists().trim().escape().custom((value, {req}) => {
+    check("password").exists().trim().escape().custom(async (value, {req}) => {
       const userRepository = getManager().getRepository(User)
-      return userRepository.findOne({where: {"username": req.body.username}}).then(user => {
+      return await userRepository.findOne({where: {"username": req.body.username}}).then(user => {
         return bcrypt.compare(value, user.password).then((error) => {
           if(!error) {
             return Promise.reject("Password does not match")
@@ -53,7 +54,7 @@ export class UserService {
     })
   ]
 
-  public static validationResult(req, res, next) {
+  public static validationResult(req:Request, res:Response, next:NextFunction) {
     const errors = validationResult(req)
     
     if(!errors.isEmpty()) {
@@ -63,8 +64,8 @@ export class UserService {
     }
   }
 
-  public static hashPassword(req, res, next) {
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
+  public static hashPassword(req:Request, res:Response, next:NextFunction) {
+    bcrypt.hash(req.body.password, 10, (err:Error, hash:string) => {
       req.body.password = hash
       return next()
     })

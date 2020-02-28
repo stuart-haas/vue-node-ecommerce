@@ -1,56 +1,53 @@
-import * as express from "express"
+import { Response, Request, NextFunction, Router } from "express"
+import { app } from "app"
+
+export interface RouteCallback {
+  (router:Router, middleware:Array<any>):void
+}
 
 export class Route {
 
-  private static app
-  private static router
+  private static router:Router
 
-  public static async testAction(req, res) {
-    return await res.send("Test Action")
-  }
-
-  public static boot(app) {
-    this.app = app
-  }
-
-  public static middleware(middleware) {
-    return new Route(middleware)
+  public static middleware(middleware:Array<any>) {
+    return new Route(middleware, null)
   }
 
   public static prefix(path:string) {
     return new Route(null, path)
   }
 
-  public static group(options, callback:Function) {
-    Route.router = express.Router()
-    if(options.prefix) Route.app.use(options.prefix, Route.router)
-    else Route.app.use(Route.router)
+  public static group(options:any, callback:RouteCallback) {
+    Route.router = Router()
+    if(options.prefix) app.use(options.prefix, Route.router)
+    else app.use(Route.router)
     if(options.middleware) callback(Route.router, options.middleware)
-    else callback(Route.router)
+    else callback(Route.router, null)
   }
 
-  public static bind(method, path, middleware, action) {
-    Route.router[method](path, middleware, (req, res, next) => {
+  public static api(method:string, path:string, middleware:Array<any>, action:Function) {
+    Route.router[method](path, middleware, (req:Request, res:Response, next:NextFunction) => {
       action(req, res)
         .then(() => next)
-        .catch(err => next(err))
+        .catch((err:Error) => next(err))
     })
   }
 
-  private middleware
-  private prefix
-  private router
+  public static view(method:string, path:string, middleware:Array<any>, action:Function) {
+    Route.router[method](path, middleware, (req:Request, res:Response) => {
+      action(req, res)
+    })
+  }
 
-  public constructor(middleware?, prefix?) {
+  middleware: Array<any>
+  prefix: string
+
+  public constructor(middleware:Array<any>, prefix:string) {
     this.middleware = middleware || []
     this.prefix = prefix || null
   }
 
-  public group(callback:Function) {
-    this.router = express.Router()
-    if(this.prefix) Route.app.use(this.prefix, this.router)
-    else Route.app.use(this.router)
-    if(this.middleware.length) callback(this.router, this.middleware)
-    else callback(this.router)
+  public group(callback:RouteCallback) {
+    Route.group(this, callback)
   }
 }
