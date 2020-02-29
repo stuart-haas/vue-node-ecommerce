@@ -6,6 +6,7 @@ import { CartController } from "@controller/CartController"
 import { ProductController } from "@controller/ProductController"
 import { Auth } from "@middleware/Auth"
 import { log } from "@middleware/Logger"
+import { Request, Response } from 'express'
 
 export class API {
 
@@ -33,7 +34,7 @@ export class API {
     })
 
     Route.match(['get', 'post'], '/api/test', (router, method, path) => {
-      Route.async(method, path, [log],  ProductController.findAll)
+      Route.sync(method, path, [log],  (req:Request, res:Response) => res.send("Hello World!"))
     })
   }
 } 
