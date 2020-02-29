@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express"
 
 export class Auth {
   
-  public static require(url:string='') {
+  public static require(url:string='/login') {
     return (req:Request, res:Response, next:NextFunction) => {
       if(!req['session'].user) {
         if(url) {
@@ -16,7 +16,7 @@ export class Auth {
     }
   }
 
-  public static verify(url:string='') {
+  public static verify(url:string='/dashboard') {
     return (req:Request, res:Response, next:NextFunction) => {
       if(req['session'] && req['session'].user) {
         if(url) {

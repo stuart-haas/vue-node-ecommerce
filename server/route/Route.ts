@@ -11,7 +11,13 @@ export interface RouteMatchCallback {
 
 export class Route {
 
-  private static router:Router = Router()
+  public static router:Router = Router()
+
+  public static redirect(url:string) {
+    return (req:Request, res:Response) => {
+      res.redirect(url)
+    }
+  }
 
   public static middleware(middleware:Array<any>) {
     return new Route(middleware)

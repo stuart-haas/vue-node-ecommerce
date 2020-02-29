@@ -4,7 +4,6 @@ import { UserService } from "@service/UserService"
 import { SessionController } from "@controller/SessionController"
 import { CartController } from "@controller/CartController"
 import { ProductController } from "@controller/ProductController"
-import { ImageService } from "@service/ImageService"
 import { Auth } from "@middleware/Auth"
 import { log } from "@middleware/Logger"
 
@@ -12,7 +11,7 @@ export class API {
 
   public static register() {
     Route.group({prefix: '/api/users', middleware: [log]}, (router, middleware) => {
-      Route.async('get', '/', middleware, UserController.findAll)
+      Route.async('get', '/', [log, Auth.require()], UserController.findAll)
       Route.async('get', '/email', middleware, UserController.findByEmail)
       Route.async('get', '/name', middleware, UserController.findByUsername)
       Route.async('post', '/register', [UserService.validateRegistration, UserService.validationResult, UserService.hashPassword], UserController.create)

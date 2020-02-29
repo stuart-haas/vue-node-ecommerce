@@ -4,12 +4,6 @@ import { User } from "@entity/User"
 
 export class ViewController {
 
-  public static redirect(url:string) {
-    return (req:Request, res:Response) => {
-      res.redirect(url)
-    }
-  }
-
   public static renderDashboard(req:Request, res:Response) {
     res.render("pages/dashboard", { data: { user: req['session'].user }})
   }
