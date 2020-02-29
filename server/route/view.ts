@@ -8,19 +8,19 @@ export class View {
 
   public static register() {
     Route.middleware([Auth.require("/login"), log]).group((router, middleware) => {
-      Route.view('get', '/', middleware, ViewController.renderDashboard)
-      Route.view('get', '/dashboard', middleware, ViewController.renderDashboard)
-      Route.view('get', '/account', middleware, ViewController.renderAccount)
-      Route.view('get', '/settings', middleware, ViewController.renderSettings)
+      Route.sync('get', '/', middleware, ViewController.renderDashboard)
+      Route.sync('get', '/dashboard', middleware, ViewController.renderDashboard)
+      Route.sync('get', '/account', middleware, ViewController.renderAccount)
+      Route.sync('get', '/settings', middleware, ViewController.renderSettings)
     })
 
     Route.middleware([Auth.verify("/dashboard"), log]).group((router, middleware) => {
-      Route.view('get', '/register', middleware, ViewController.renderRegister)
-      Route.view('get', '/login', middleware, ViewController.renderLogin)
+      Route.sync('get', '/register', middleware, ViewController.renderRegister)
+      Route.sync('get', '/login', middleware, ViewController.renderLogin)
     })
 
-    Route.view('get', '/logout', [SessionController.delete], ViewController.redirect("/login"))
+    Route.sync('get', '/logout', [SessionController.delete], ViewController.redirect("/login"))
     
-    Route.view('get', '/store', [],  ViewController.renderStore)
+    Route.sync('get', '/store', [],  ViewController.renderStore)
   }
 }
