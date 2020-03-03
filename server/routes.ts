@@ -12,30 +12,32 @@ import { Request, Response } from "express"
 export class Routes {
 
   public static register() {
-    Route.group({prefix: '/api/users', middleware: [log]}, (router, middleware) => {
-      Route.async('get', '/', [log, Auth.require()], UserController.findAll)
-      Route.async('get', '/email', middleware, UserController.findByEmail)
-      Route.async('get', '/name', middleware, UserController.findByUsername)
-      Route.async('post', '/register', [UserService.validateRegistration, UserService.validationResult, UserService.hashPassword], UserController.create)
-      Route.async('post', '/login', [UserService.validateLogin, UserService.validationResult, SessionController.create], UserController.findBySession)
-      Route.async('put', '/update', [UserService.validateUpdate, UserService.validationResult, UserService.hashPassword], UserController.update)
-    })
+    Route.root('/api', () => {
+      Route.group({prefix: '/users', middleware: [log]}, (router, middleware) => {
+        Route.async('get', '/', middleware, UserController.findAll)
+        Route.async('get', '/email', middleware, UserController.findByEmail)
+        Route.async('get', '/name', middleware, UserController.findByUsername)
+        Route.async('post', '/register', [UserService.validateRegistration, UserService.validationResult, UserService.hashPassword], UserController.create)
+        Route.async('post', '/login', [UserService.validateLogin, UserService.validationResult, SessionController.create], UserController.findBySession)
+        Route.async('put', '/update', [UserService.validateUpdate, UserService.validationResult, UserService.hashPassword], UserController.update)
+      })
 
-    Route.group({prefix: '/api/cart', middleware: [log]}, (router, middleware) => {
-      Route.async('post', '/add', middleware, CartController.add)
-      Route.async('get', '/get', middleware, CartController.get)
-      Route.async('put', '/update', middleware, CartController.update)
-      Route.async('delete', '/remove', middleware, CartController.remove)
-      Route.async('delete', '/clear', middleware, CartController.clear)
-    })
-
-    Route.group({prefix: '/api/products', middleware: [log]}, (router, middleware) => {
-      Route.async('get', '/', middleware,  ProductController.findAll)
-      Route.async('post', '/create', middleware, ProductController.create)
-    })
-
-    Route.match(['get', 'post'], '/api/test', (router, method, path) => {
-      Route.sync(method, path, [log],  (req:Request, res:Response) => res.send("Hello World!"))
+      Route.group({prefix: '/cart', middleware: [log]}, (router, middleware) => {
+        Route.async('post', '/add', middleware, CartController.add)
+        Route.async('get', '/get', middleware, CartController.get)
+        Route.async('put', '/update', middleware, CartController.update)
+        Route.async('delete', '/remove', middleware, CartController.remove)
+        Route.async('delete', '/clear', middleware, CartController.clear)
+      })
+  
+      Route.group({prefix: '/products', middleware: [log]}, (router, middleware) => {
+        Route.async('get', '/', middleware,  ProductController.findAll)
+        Route.async('post', '/create', middleware, ProductController.create)
+      })
+  
+      Route.match(['get', 'post'], '/test', (router, method, path) => {
+        Route.sync(method, path, [log],  (req:Request, res:Response) => res.send("Hello World!"))
+      })
     })
 
     Route.middleware([Auth.require(), log]).group((router, middleware) => {

@@ -12,6 +12,7 @@ export interface RouteMatchCallback {
 export class Route {
 
   public static router:Router = Router()
+  private static rootPrefix:string
 
   public static redirect(url:string) {
     return (req:Request, res:Response) => {
@@ -20,14 +21,22 @@ export class Route {
   }
 
   public static middleware(middleware:Array<any>) {
+    Route.router = Router()
     return new Route(middleware)
   }
 
   public static prefix(path:string) {
+    Route.router = Router()
     return new Route(null, path)
   }
 
+  public static root(path:string, callback:Function) {
+    Route.rootPrefix = path
+    callback()
+  }
+
   public static match(methods:Array<string>, path:string, callback:RouteMatchCallback) {
+    Route.router = Router()
     methods.forEach(method => {
       callback(Route.router, method, path)
     })
@@ -35,7 +44,8 @@ export class Route {
   }
 
   public static group(options:any, callback:RouteCallback) {
-    if(options.prefix) app.use(options.prefix, Route.router)
+    Route.router = Router()
+    if(options.prefix) app.use(Route.rootPrefix + options.prefix, Route.router)
     else app.use(Route.router)
     if(options.middleware) callback(Route.router, options.middleware)
     else callback(Route.router, null)
