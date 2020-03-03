@@ -30,9 +30,10 @@ export class Route {
     return new Route(null, path)
   }
 
-  public static root(path:string, callback:Function) {
+  public static root(path:string, callback:RouteCallback) {
+    Route.router = Router()
     Route.rootPrefix = path
-    callback()
+    callback(Route.router, [])
   }
 
   public static match(methods:Array<string>, path:string, callback:RouteMatchCallback) {

@@ -12,7 +12,7 @@ import { Request, Response } from "express"
 export class Routes {
 
   public static register() {
-    Route.root('/api', () => {
+    Route.root('/api', (router) => {
       Route.group({prefix: '/users', middleware: [log]}, (router, middleware) => {
         Route.async('get', '/', middleware, UserController.findAll)
         Route.async('get', '/email', middleware, UserController.findByEmail)
