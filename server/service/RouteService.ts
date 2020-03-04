@@ -72,7 +72,7 @@ export class Route {
   middleware: Array<any>
   prefix: string
 
-  public constructor(middleware:Array<any> = [], prefix:string = '') {
+  public constructor(middleware:Array<any> = [], prefix:string = "") {
     this.middleware = middleware
     this.prefix = prefix
   }
