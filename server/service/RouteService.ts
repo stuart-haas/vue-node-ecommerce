@@ -34,11 +34,13 @@ export class Route {
     Route.router = Router()
     Route.rootPrefix = path
     callback(Route.router, [])
+    Route.rootPrefix = ''
   }
 
   public static match(methods:Array<string>, path:string, callback:RouteMatchCallback) {
     Route.router = Router()
-    app.use(Route.rootPrefix, Route.router)
+    if(Route.prefix) app.use(Route.rootPrefix, Route.router)
+    else app.use(Route.router)
     methods.forEach(method => {
       callback(Route.router, method, path)
     })
@@ -54,19 +56,21 @@ export class Route {
   }
 
   public static async(method:string, path:string, middleware:Array<any>, action:Function) {
+    if(Route.prefix) app.use(Route.rootPrefix, Route.router)
+    else app.use(Route.router)
     Route.router[method](path, middleware, (req:Request, res:Response, next:NextFunction) => {
       action(req, res)
         .then(() => next)
         .catch((err:Error) => next(err))
     })
-    app.use(Route.router)
   }
 
   public static sync(method:string, path:string, middleware:Array<any>, action:Function) {
+    if(Route.prefix) app.use(Route.rootPrefix, Route.router)
+    else app.use(Route.router)
     Route.router[method](path, middleware, (req:Request, res:Response) => {
       action(req, res)
     })
-    app.use(Route.router)
   }
 
   middleware: Array<any>
