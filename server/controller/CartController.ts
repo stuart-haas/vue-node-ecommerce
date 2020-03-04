@@ -21,7 +21,11 @@ export class CartController {
   }
 
   public static async get(req:Request, res:Response) {
-    res.json(req['session'].cart)
+    if(req['session'].cart) {
+      res.status(200).send({status: 200, data: req['session'].cart})
+    } else {
+      res.status(404).send({status: 404, error: 'Your cart is empty'})
+    }
   }
 
   public static async update(req:Request, res:Response) {

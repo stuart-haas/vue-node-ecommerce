@@ -23,8 +23,8 @@ export class Routes {
       })
 
       Route.group({prefix: '/cart', middleware: [log]}, (router, middleware) => {
+        Route.async('get', '/', middleware, CartController.get)
         Route.async('post', '/add', middleware, CartController.add)
-        Route.async('get', '/get', middleware, CartController.get)
         Route.async('put', '/update', middleware, CartController.update)
         Route.async('delete', '/remove', middleware, CartController.remove)
         Route.async('delete', '/clear', middleware, CartController.clear)
@@ -32,7 +32,7 @@ export class Routes {
   
       Route.group({prefix: '/products', middleware: [log]}, (router, middleware) => {
         Route.async('get', '/', middleware,  ProductController.findAll)
-        Route.async('post', '/create', middleware, ProductController.create)
+        Route.async('post', '/', middleware, ProductController.create)
       })
   
       Route.match(['get', 'post'], '/test', (router, method, path) => {

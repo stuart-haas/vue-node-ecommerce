@@ -10,7 +10,7 @@ export class ViewController {
 
   public static renderAccount(req:Request, res:Response) {
     const userRepository = getManager().getRepository(User)
-    const user = userRepository.findOne(req['session'].user.id).then(user => {
+    userRepository.findOne(req['session'].user.id).then(user => {
       res.render("pages/account", { data: { user: user }})
     })
   }

@@ -94,7 +94,7 @@ export class CartService {
     req['session'].cart = cart
     req['session'].save((err:Error) => { 
       if(err){ throw err }       
-      res.json(req['session'].cart)
+      res.status(200).send({status: 200, data: req['session'].cart})
     })
   }
 }
