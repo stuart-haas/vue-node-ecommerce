@@ -38,6 +38,7 @@ export class Route {
 
   public static match(methods:Array<string>, path:string, callback:RouteMatchCallback) {
     Route.router = Router()
+    app.use(Route.rootPrefix, Route.router)
     methods.forEach(method => {
       callback(Route.router, method, path)
     })
@@ -58,12 +59,14 @@ export class Route {
         .then(() => next)
         .catch((err:Error) => next(err))
     })
+    app.use(Route.router)
   }
 
   public static sync(method:string, path:string, middleware:Array<any>, action:Function) {
     Route.router[method](path, middleware, (req:Request, res:Response) => {
       action(req, res)
     })
+    app.use(Route.router)
   }
 
   middleware: Array<any>
