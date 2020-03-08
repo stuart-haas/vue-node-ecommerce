@@ -7,6 +7,9 @@ export class Product {
     id: number
 
     @Column()
+    image: string
+
+    @Column()
     sku: string
 
     @Column()
@@ -15,7 +18,7 @@ export class Product {
     @Column()
     description: string
 
-    @Column()
+    @Column({ type: "float" })
     price: number
 
     @Column()

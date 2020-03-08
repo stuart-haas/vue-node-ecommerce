@@ -30,7 +30,7 @@ export class App {
     const repository = getConnection().getRepository(Session)
 
     app.use(session({
-      secret: "secret",
+      secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
       store: new TypeormStore({ repository }),

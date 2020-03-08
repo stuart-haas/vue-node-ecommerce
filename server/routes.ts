@@ -24,15 +24,17 @@ export class Routes {
 
       Route.group({prefix: '/cart', middleware: [log]}, (router, middleware) => {
         Route.async('get', '/', middleware, CartController.get)
-        Route.async('post', '/add', middleware, CartController.add)
-        Route.async('put', '/update', middleware, CartController.update)
-        Route.async('delete', '/remove', middleware, CartController.remove)
-        Route.async('delete', '/clear', middleware, CartController.clear)
+        Route.async('post', '/:id', middleware, CartController.add)
+        Route.async('put', '/:id', middleware, CartController.update)
+        Route.async('delete', '/:id', middleware, CartController.remove)
+        Route.async('delete', '/', middleware, CartController.clear)
       })
   
       Route.group({prefix: '/products', middleware: [log]}, (router, middleware) => {
         Route.async('get', '/', middleware,  ProductController.findAll)
         Route.async('post', '/', middleware, ProductController.create)
+        Route.async('delete', '/', middleware, ProductController.delete)
+        Route.async('post', '/seed', middleware,  ProductController.seed)
       })
     })
 

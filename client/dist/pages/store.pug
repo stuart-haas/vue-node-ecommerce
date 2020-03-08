@@ -1,6 +1,13 @@
 extends ../layout
 
 block content
-  div.container.is-fluid
-    section.section
+  header.site#site-header
+    div.wrapper
+      navigation
+  main.container.has-sidebar
+    aside.nav
+      a(href="/products/category-1") Category 1
+    section.content
       products
+  drawer
+    cart

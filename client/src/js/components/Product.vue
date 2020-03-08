@@ -1,24 +1,23 @@
 <template>
-  <div class="column">
-    <div class="card">
-      <div class="card-content">
-        <div class="content">
-          <p class="title is-4">{{ product.name }}</p>
-          <p class="subtitle is-6">SKU: {{ product.sku }}</p>
-          <p>Description: {{ product.description }}</p>
-          <p>Price: ${{ product.price }}</p>
-          <p>In Stock: {{ product.inStock }}</p>
-          <input class="input is-rounded" type="text" placeholder="Quantity" v-model="quantity">
-        </div>
+  <div class="column gutter">
+    <div class="card stacked">
+      <div class="card-image">
+        <img :src="product.image" :alt="product.name">
       </div>
-      <footer class="card-footer">
-        <a href="#" class="card-footer-item" @click="addToCart">Add to Cart</a>
+      <div class="card-content">
+        <a :href="link"><h3 class="title">{{ product.name }}</h3></a>
+        <p>${{ product.price }}</p>
+      </div>
+      <footer class="card-footer input-group">
+        <input type="text" placeholder="Quantity" v-model="quantity">
+        <input class="success" type="button" value="Add to Cart" @click="addToCart">
       </footer>
     </div>
   </div>
 </template>
 
 <script>
+import { Events } from "../util/events"
 import axios from 'axios'
 export default {
   props: {
@@ -31,17 +30,21 @@ export default {
   },
   data() {
     return {
-      quantity: 0
+      quantity: 1
+    }
+  },
+  computed: {
+    link() {
+      return '/store/products/' + this.product.sku
     }
   },
   methods: {
     addToCart() {
-      axios.post('/api/cart/add', null, { params: {
-        sku: this.product.sku,
+      axios.post(`/api/cart/${this.product.id}`, null, { data: {
         quantity: this.quantity,
         price: this.product.price
       }}).then(response => {
-        console.log(response.data)
+        Events.$emit('refresh-cart')
       }).catch(error => {
         console.log(error)
       })
@@ -50,6 +53,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 </style>

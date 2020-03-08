@@ -1,11 +1,11 @@
-import { CartService, Product } from "@service/CartService"
+import { CartService, CartItem } from "@service/CartService"
 import { Response, Request } from "express"
 
 export class CartController {
 
   public static async add(req:Request, res:Response) {
     const cart = CartService.session(req)
-    CartService.product(req, (nProduct:Product) => {
+    CartService.product(req, (nProduct:CartItem) => {
       if(cart.items.length == 0) {
         CartService.add(cart, nProduct)
       } else {
@@ -22,15 +22,19 @@ export class CartController {
 
   public static async get(req:Request, res:Response) {
     if(req['session'].cart) {
-      res.status(200).send({status: 200, data: req['session'].cart})
+      const cart = CartService.session(req)
+      const nCart = CartService.merge(cart, req['session'].cart.items)
+      nCart.then(response => {
+        res.status(200).send({status: 200, data: response})
+      })
     } else {
-      res.status(404).send({status: 404, error: 'Your cart is empty'})
+      res.status(200).send({status: 200, error: 'Your cart is empty'})
     }
   }
 
   public static async update(req:Request, res:Response) {
     const cart = CartService.session(req)
-    CartService.product(req, (product:Product) => {
+    CartService.product(req, (product:CartItem) => {
       CartService.update(cart, product, product.quantity, product.subtotal)
       CartService.save(req, res, cart)
     })
@@ -38,7 +42,7 @@ export class CartController {
 
   public static async remove(req:Request, res:Response) {
     const cart = CartService.session(req)
-    CartService.product(req, (product:Product) => {
+    CartService.product(req, (product:CartItem) => {
       CartService.remove(cart, product)
       CartService.save(req, res, cart)
     })

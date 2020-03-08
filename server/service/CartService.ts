@@ -1,16 +1,24 @@
-import { Response, Request } from "express"
+import { Response, Request, response } from "express"
+import { getManager } from "typeorm"
+import { Product } from "@entity/Product"
 
-export interface ProductCallback {
-  (product:Product):void
+export interface CartItemCallback {
+  (product:CartItem):void
 }
 
-export class Product {
+export class CartItem {
+  public id:number
   public sku:string
   public price:number
   public quantity:number
   public subtotal:number
-  constructor(sku:string, price:number, quantity:number){
+  public name:string
+  public image:string
+  constructor(id:number, price:number, quantity:number, sku:string = '', name:string = '', image:string = ''){
+    this.id = id
+    this.image = image
     this.sku = sku
+    this.name = name
     this.price = price
     this.quantity = quantity
     this.subtotal = price * quantity
@@ -18,7 +26,7 @@ export class Product {
 }
 
 export class Cart {
-  public items:Array<Product> = []
+  public items:Array<CartItem> = []
   public totalItems:number = 0
   public totalPrice:number = 0
   constructor() {}
@@ -26,41 +34,42 @@ export class Cart {
 
 export class CartService {
 
-  static product(req:Request, callback:ProductCallback) {
-    let price = parseFloat(req.query.price)
-    let quantity = parseInt(req.query.quantity)
+  static product(req:Request, callback:CartItemCallback) {
+    const id = parseInt(req.params.id)
+    const price = parseFloat(req.body.price)
+    const quantity = parseInt(req.body.quantity)
 
-    return callback(new Product(req.query.sku, price, quantity))
+    return callback(new CartItem(id, price, quantity))
   }
 
-  static find(cart:Cart, product:Product) {
+  static find(cart:Cart, product:CartItem) {
     return cart.items.find(item => {
-      return item.sku === product.sku
+      return item.id === product.id
     })
   }
 
-  static add(cart:Cart, product:Product, quantity:number=0, subtotal:number=0) {
+  static add(cart:Cart, product:CartItem, quantity:number=0, subtotal:number=0) {
     if(!quantity && !subtotal) {
       cart.items.push(product)
     } else {
       product.quantity += quantity
       product.subtotal += subtotal
-      let index = cart.items.findIndex(item => item.sku === product.sku)
+      let index = cart.items.findIndex(item => item.id === product.id)
       cart.items.splice(index, 1, product)
     }
     CartService.calculateTotals(cart)
   }
 
-  static update(cart:Cart, product:Product, quantity:number, subtotal:number) {
+  static update(cart:Cart, product:CartItem, quantity:number, subtotal:number) {
     product.quantity = quantity
     product.subtotal = subtotal
-    let index = cart.items.findIndex(item => item.sku === product.sku)
+    let index = cart.items.findIndex(item => item.id === product.id)
     cart.items.splice(index, 1, product)
     CartService.calculateTotals(cart)
   }
 
-  static remove(cart:Cart, product:Product) {
-    let index = cart.items.findIndex(item => item.sku === product.sku)
+  static remove(cart:Cart, product:CartItem) {
+    let index = cart.items.findIndex(item => item.id === product.id)
     cart.items.splice(index, 1)
     CartService.calculateTotals(cart)
   }
@@ -96,5 +105,24 @@ export class CartService {
       if(err){ throw err }       
       res.status(200).send({status: 200, data: req['session'].cart})
     })
+  }
+
+  static async merge(cart: Cart, items:Array<CartItem>) {
+    for(var i = 0; i < items.length; i ++) {
+      try {
+        var cartItem:CartItem = items[i];
+        var id = cartItem.id
+        const productRepository = getManager().getRepository(Product)
+        const product = await productRepository.findOne(id)
+        cartItem.sku = product.sku
+        cartItem.name = product.name
+        cartItem.image = product.image
+        let index = cart.items.findIndex(item => item.id === cartItem.id)
+        cart.items.splice(index, 1, cartItem)
+      } catch(error) {
+        console.log(error)
+      }
+    }
+    return cart
   }
 }

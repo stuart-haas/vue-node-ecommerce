@@ -1,5 +1,5 @@
 <template>
-  <div class="columns">
+  <div class="grid flex wrap three two@tablet one@mobile gutter">
     <product
       v-for="(product, index) in products"
       :key="index"
@@ -34,6 +34,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 </style>
