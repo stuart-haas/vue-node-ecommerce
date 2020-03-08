@@ -52,6 +52,7 @@ export default {
       axios.get('/api/cart')
         .then(response => {
           if(response.data.error) {
+            this.products = []
             this.message = response.data.error
           } else {
             this.message = `You have ${response.data.data.items.length} items in your cart`

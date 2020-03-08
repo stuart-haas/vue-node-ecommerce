@@ -54,7 +54,7 @@ export class CartService {
     } else {
       product.quantity += quantity
       product.subtotal += subtotal
-      let index = cart.items.findIndex(item => item.id === product.id)
+      const index = cart.items.findIndex(item => item.id === product.id)
       cart.items.splice(index, 1, product)
     }
     CartService.calculateTotals(cart)
@@ -63,13 +63,13 @@ export class CartService {
   static update(cart:Cart, product:CartItem, quantity:number, subtotal:number) {
     product.quantity = quantity
     product.subtotal = subtotal
-    let index = cart.items.findIndex(item => item.id === product.id)
+    const index = cart.items.findIndex(item => item.id === product.id)
     cart.items.splice(index, 1, product)
     CartService.calculateTotals(cart)
   }
 
   static remove(cart:Cart, product:CartItem) {
-    let index = cart.items.findIndex(item => item.id === product.id)
+    const index = cart.items.findIndex(item => item.id === product.id)
     cart.items.splice(index, 1)
     CartService.calculateTotals(cart)
   }
@@ -91,9 +91,9 @@ export class CartService {
     cart.totalPrice = 0
     cart.totalItems = 0
     cart.items.forEach(item => {
-      let price = item.price
-      let quantity = item.quantity
-      let amount = price * quantity
+      const price = item.price
+      const quantity = item.quantity
+      const amount = price * quantity
       cart.totalPrice += amount
       cart.totalItems += quantity
     });
@@ -107,7 +107,8 @@ export class CartService {
     })
   }
 
-  static async merge(cart: Cart, items:Array<CartItem>) {
+  static async merge(cart: Cart) {
+    const items = cart.items
     for(var i = 0; i < items.length; i ++) {
       try {
         var cartItem:CartItem = items[i];
@@ -117,7 +118,7 @@ export class CartService {
         cartItem.sku = product.sku
         cartItem.name = product.name
         cartItem.image = product.image
-        let index = cart.items.findIndex(item => item.id === cartItem.id)
+        const index = cart.items.findIndex(item => item.id === cartItem.id)
         cart.items.splice(index, 1, cartItem)
       } catch(error) {
         console.log(error)

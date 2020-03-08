@@ -21,9 +21,9 @@ export class CartController {
   }
 
   public static async get(req:Request, res:Response) {
-    if(req['session'].cart) {
+    if(req['session'].cart && req['session'].cart.items.length) {
       const cart = CartService.session(req)
-      const nCart = CartService.merge(cart, req['session'].cart.items)
+      const nCart = CartService.merge(cart)
       nCart.then(response => {
         res.status(200).send({status: 200, data: response})
       })
