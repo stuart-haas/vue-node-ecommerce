@@ -3,9 +3,9 @@
     <h1 v-if="message">{{ message }}</h1>
     <div class="cart-products">
       <div
+        class="cart-product card inline"
         v-for="(product, index) in products"
         :key="index"
-        class="cart-product card inline"
       >
         <div class="card-image">
           <img class="thumb" :src="product.image" :alt="product.name">
@@ -21,7 +21,7 @@
     </div>
     <div class="cart-footer">
       <div class="content">
-        <h1>Total: ${{ total }}</h1>
+        <h1>Total: ${{ totalPrice }}</h1>
         <a href="/cart/checkout">Checkout</a>
       </div>
     </div>
@@ -35,12 +35,12 @@ export default {
   data() {
     return {
       products: [],
-      total: 0,
+      totalPrice: 0,
       message: ''
     }
   },
   mounted() {
-    Events.$on('refresh-cart', params => {
+    Events.$on('add-to-cart', params => {
       this.refresh()
     })
   },
@@ -57,8 +57,9 @@ export default {
           } else {
             this.message = `You have ${response.data.data.items.length} items in your cart`
             this.products = response.data.data.items
-            this.total = response.data.data.totalPrice
+            this.totalPrice = response.data.data.totalPrice
           }
+          Events.$emit('cart-refresh', { totalItems: this.products.length })
         })
         .catch(error => {
           console.log(error.response)

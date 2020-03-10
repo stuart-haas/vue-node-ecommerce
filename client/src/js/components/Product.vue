@@ -10,7 +10,7 @@
       </div>
       <footer class="card-footer input-group">
         <input type="text" placeholder="Quantity" v-model="quantity">
-        <input class="success" type="button" value="Add to Cart" @click="addToCart">
+        <button class="btn btn-success" @click="addToCart">Add to Cart</button>
       </footer>
     </div>
   </div>
@@ -44,7 +44,7 @@ export default {
         quantity: this.quantity,
         price: this.product.price
       }}).then(response => {
-        Events.$emit('refresh-cart')
+        Events.$emit('add-to-cart')
       }).catch(error => {
         console.log(error)
       })

@@ -63,10 +63,25 @@ button {
   cursor: pointer;
 }
 
-input[type="button"] {
-  cursor: pointer;
+i[data-count] {
+  position: relative;
+  &:after {
+    content: attr(data-count);
+    position: absolute;
+    font-family: $font-sans-serif;
+    font-size: .75rem;
+    color: $green;
+    padding: .2em;
+    border-radius: 50%;
+    line-height: 1em;
+    background: $dark-gray;
+    text-align: center;
+    min-width: 1em;
+  }
+}
 
-  &.success {
+.btn {
+  &-success {
     background-color: $green;
     transition: all .3s ease;
 
@@ -110,7 +125,6 @@ nav.nav {
   &.has-sidebar {
     display: flex;
     justify-content: stretch;
-
 
     aside {
       padding: 2em;
@@ -168,7 +182,7 @@ nav.nav {
   
     #{ $self }-footer {
       &.input-group {
-        input {
+        input, button {
           border-top: none;
   
           &:not(:first-child) {
